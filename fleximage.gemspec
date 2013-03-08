@@ -164,7 +164,7 @@ super easy.
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rmagick>, [">= 0"])
-      s.add_runtime_dependency(%q<aws-s3>, [">= 0"])
+#      s.add_runtime_dependency(%q<aws-s3>, [">= 0"])
       s.add_development_dependency(%q<rails>, [">= 3.0.0"])
     else
       s.add_dependency(%q<rmagick>, [">= 0"])
