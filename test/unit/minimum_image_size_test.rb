@@ -2,21 +2,21 @@ require File.dirname(__FILE__) + '/../../test/test_helper'
 
 
 class BigPhoto < ActiveRecord::Base
-  set_table_name :photo_dbs
+  self.table_name = :photo_dbs
   acts_as_fleximage do
     validates_image_size '80x60'
   end
 end
 
 class WidePhoto < ActiveRecord::Base
-  set_table_name :photo_dbs
+  self.table_name = :photo_dbs
   acts_as_fleximage do
     validates_image_size '80x0'
   end
 end
 
 class HighPhoto < ActiveRecord::Base
-  set_table_name :photo_dbs
+  self.table_name = :photo_dbs
   acts_as_fleximage do
     validates_image_size '0x60'
   end
@@ -26,7 +26,7 @@ class MinimumImageSizeTest < Test::Unit::TestCase
   def test_should_not_save_small_image
     p = BigPhoto.new(:image_file => files(:i1x1))
     assert !p.save
-    assert p.errors["image_file"].match(/is too small/)
+    assert p.errors["image_file"].join().match(/is too small/)
   end
   
   def test_should_save_big_image
@@ -51,6 +51,6 @@ class MinimumImageSizeTest < Test::Unit::TestCase
   def test_should_include_minimum_dimensions_in_message
     p = BigPhoto.new(:image_file => files(:i1x1))
     p.save
-    assert_equal "is too small (Minimum: 80x60)", p.errors["image_file"]
+    assert_equal "is too small (Minimum: 80x60)", p.errors["image_file"].join()
   end
 end

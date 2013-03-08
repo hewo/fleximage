@@ -1,20 +1,15 @@
 # Load the environment
-ENV['RAILS_ENV'] ||= 'test'
-require File.dirname(__FILE__) + '/rails_root/config/environment.rb'
- 
+ENV["RAILS_ENV"] = "test"
+require File.expand_path("../rails_root/config/environment.rb",  __FILE__) 
+
 # Load the testing framework
-require 'test_help'
+require 'rails/test_help'
 silence_warnings { RAILS_ENV = ENV['RAILS_ENV'] }
  
 # Run the migrations
 ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
  
-# Setup the fixtures path
-Test::Unit::TestCase.fixture_path = File.dirname(__FILE__) + "/fixtures/"
-$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path)
- 
 require File.dirname(__FILE__) + '/mock_file'
-require File.dirname(__FILE__) + '/s3_stubs'
 require 'open-uri'
 
 unless Magick::QuantumDepth == 16
@@ -31,9 +26,6 @@ class Test::Unit::TestCase #:nodoc:
       Fixtures.create_fixtures(Test::Unit::TestCase.fixture_path, table_names)
     end
   end
- 
-  self.use_transactional_fixtures = true
-  self.use_instantiated_fixtures  = false
   
   def files(name)
     case name

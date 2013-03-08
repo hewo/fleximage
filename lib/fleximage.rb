@@ -1,14 +1,12 @@
 require 'open-uri'
 require 'base64'
 require 'digest/sha1'
-require 'aws/s3'
 
 require 'RMagick' unless defined?(Magick)
 
 # Apply a few RMagick patches
 require 'fleximage/rmagick_image_patch'
 
-# Load dsl_accessor from lib
 require 'dsl_accessor'
 
 # Load Operators
@@ -33,7 +31,7 @@ if defined?(ActionView::Template)
   # Rails >= 2.1
   if Rails.version.to_f >= 3 
     require 'fleximage/rails3_view'
-    ActionView::Template.register_template_handler :flexi, ActionView::TemplateHandlers::Rails3View
+    ActionView::Template.register_template_handler :flexi, Fleximage::Rails3View
   else
     require 'fleximage/view'
     ActionView::Template.register_template_handler :flexi, Fleximage::View
@@ -54,5 +52,5 @@ ActionController::Base.class_eval{ include Fleximage::AviaryController }
 
 # Register mime types
 Mime::Type.register "image/jpeg", :jpg, ["image/pjpeg"], ["jpeg"]
-Mime::Type.register "image/gif", :gif
-Mime::Type.register "image/png", :png
+Mime::Type.register "image/gif", :gif if Rails.version.to_f <= 3.1
+Mime::Type.register "image/png", :png if Rails.version.to_f <= 3.1
